@@ -5,18 +5,18 @@
 //#define TEST
 
 //constants
-#define INF_ROOTS (-1)
-#define EPSILON 0.0000000001
+const int INF_ROOTS = -1;
+const double EPSILON = 0.0000000001;
 
 //font color
 #define RESET   "\033[0m"
 #define RED     "\033[1;31m"
 
 //asserts
-#define ASSERT_EQ(x, y) assert((x) == (y));
-#define ASSERT_TRUE(x) assert((x));
-#define ASSERT_NOT_EQ(x, y) assert((x) != (y));
-#define ASSERT_EQ_PAIR(a, b, x, y) assert (((a) == (x) && (b) == (y)) || ((a) == (y) && (b) == (x)));
+#define ASSERT_EQ(x, y) assert((x) == (y))
+#define ASSERT_TRUE(x) assert((x))
+#define ASSERT_NOT_EQ(x, y) assert((x) != (y))
+#define ASSERT_EQ_PAIR(a, b, x, y) assert (((a) == (x) && (b) == (y)) || ((a) == (y) && (b) == (x)))
 
 /*!
  * solves a linear equation of the form ax + b = 0
