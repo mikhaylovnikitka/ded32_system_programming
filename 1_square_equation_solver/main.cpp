@@ -27,6 +27,8 @@ int solve_linear(double a, double b, double* x)
     ASSERT_TRUE(std::isfinite(a));
     ASSERT_TRUE(std::isfinite(b));
 
+    ASSERT_NOT_EQ(x, nullptr);
+
     //equals a == 0 && b == 0
     if (abs(a) < EPSILON && abs(b) < EPSILON)
     {
@@ -89,9 +91,9 @@ int main(int argc, char *argv[])
 {
     if (argc > 1) {
         if (static_cast<std::string>(argv[1]) == "-help") {
-            std::cout << "--------------------------------------" << std::endl;
-            std::cout << "for all questions t.me/nikitamikhaylov" << std::endl;
-            std::cout << "--------------------------------------" << std::endl;
+            printf("--------------------------------------\n");
+            printf("for all questions t.me/nikitamikhaylov\n");
+            printf("--------------------------------------\n");
             return 0;
         }
     }
