@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -54,7 +54,8 @@ public:
     {
         output = fopen(output_file_path, "w");
 
-        if (output == nullptr) {
+        if (output == nullptr)
+        {
             logger.Write(logger.ERROR, "cannot open output file");
         }
     }
@@ -66,7 +67,8 @@ public:
 
     void PrintVector(std::vector<char*>& text)
     {
-        for (auto &i : text) {
+        for (auto &i : text)
+        {
             fprintf(output, "%s \n", i);
         }
     }
@@ -76,7 +78,8 @@ private:
     FILE* output;
 };
 
-class Text {
+class Text
+{
 public:
     explicit Text() = delete;
 
@@ -108,14 +111,16 @@ public:
         //We won't use file in near future
         close(file_descriptor_);
 
-        if (maped_memory_ == MAP_FAILED) {
+        if (maped_memory_ == MAP_FAILED)
+        {
             logger_.Write(logger_.ERROR, "while memory maping the file");
             //exit(EXIT_FAILURE);
         }
 
         size_t lines_ = 1;
 
-        for (size_t i = 0; i < file_size_; i++) {
+        for (size_t i = 0; i < file_size_; i++)
+        {
             if (maped_memory_[i] == '\n' || maped_memory_[i] == '\0')
             {
                 maped_memory_[i] = '\0';
