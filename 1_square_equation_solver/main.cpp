@@ -112,6 +112,17 @@ int main(int argc, char *argv[])
 
     double x1 = 0, x2 = 0;
     int roots_quantity = solve_square(a, b, c, &x1, &x2);
+
+    if (abs(x1) < EPSILON)
+    {
+        x1 = 0;
+    }
+
+    if (abs(x2) < EPSILON)
+    {
+        x2 = 0;
+    }
+
     switch (roots_quantity)
     {
         case 0:
