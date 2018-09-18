@@ -98,16 +98,7 @@ public:
             //exit(EXIT_FAILURE);
         }
 
-        struct stat stat_buff{};
-        //filelength
-        if (fstat(file_descriptor_, &stat_buff) < 0)
-        {
-            close(file_descriptor_);
-            logger_.Write(logger_.ERROR, "in calling function fstat", __FUNCTION__);
-            //exit(EXIT_FAILURE);
-        }
-
-        file_size_ = static_cast<size_t>(stat_buff.st_size);
+        file_size_ = GetFileLength(file_descriptor_);
 
         //Memory mapping the file.
         mapped_memory_ = static_cast<char*>(mmap(nullptr, file_size_ + 1, PROT_READ | PROT_WRITE,
@@ -168,6 +159,19 @@ public:
     }
 
 private:
+
+    size_t GetFileLength(int file_descriptor)
+    {
+        struct stat stat_buff{};
+        if (fstat(file_descriptor_, &stat_buff) < 0)
+        {
+            close(file_descriptor_);
+            logger_.Write(logger_.ERROR, "in calling function fstat", __FUNCTION__);
+            //exit(EXIT_FAILURE);
+        }
+
+        return static_cast<size_t>(stat_buff.st_size);
+    }
 
     size_t lines_quantity_ = 1;
     size_t file_size_ = 0;
