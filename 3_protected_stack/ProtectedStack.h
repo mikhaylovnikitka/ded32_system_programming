@@ -48,6 +48,10 @@ ProtectedStack<T>::ProtectedStack(int initial_capacity) : loggerHTML_("dump.html
     }
     capacity_ = initial_capacity;
     data_ = new T[initial_capacity];
+    for (int i = 0; i < capacity_ ; ++i)
+    {
+        data_[i] = T();
+    }
     logger_.Write(logger_.INF, "constructor ended", __FUNCTION__);
     checksum_ = CalculateChecksum();
 }
