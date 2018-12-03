@@ -7,30 +7,26 @@
 
 #include "tree.h"
 
-node_t Differentiator(node_t curr) {
+node_t Differentiator(const node_t curr, int variable) {
     if (curr == nullptr) {
         return nullptr;
     }
+    auto d_left = Differentiator(curr->left_, variable);
+    auto d_right = Differentiator(curr->right_, variable);
     switch (curr->type_name_) {
         case NodeTypeName::SUB:{
-            auto d_left = Differentiator(curr->left_);
-            auto d_right = Differentiator(curr->right_);
             return CreateBinaryOperation(
                     d_left,
                     d_right,
                     NodeTypeName::SUB);
         }
         case NodeTypeName::ADD:{
-            auto d_left = Differentiator(curr->left_);
-            auto d_right = Differentiator(curr->right_);
             return CreateBinaryOperation(
                     d_left,
                     d_right,
                     NodeTypeName::ADD);
         }
         case NodeTypeName::MUL : {
-            auto d_left = Differentiator(curr->left_);
-            auto d_right = Differentiator(curr->right_);
             auto first_mul = CreateBinaryOperation(
                     d_left,
                     curr->right_,
@@ -45,8 +41,6 @@ node_t Differentiator(node_t curr) {
                     NodeTypeName::SUB);
         }
         case NodeTypeName::DIV : {
-            auto d_left = Differentiator(curr->left_);
-            auto d_right = Differentiator(curr->right_);
             auto first_mul = CreateBinaryOperation(
                     d_left,
                     curr->right_,
@@ -81,12 +75,12 @@ node_t Differentiator(node_t curr) {
                     NodeTypeName::MUL);
             return CreateBinaryOperation(
                     curr,
-                    Differentiator(helpful_mul),
+                    Differentiator(helpful_mul, variable),
                     NodeTypeName::MUL);
         }
 
         case NodeTypeName::UNARY_MINUS : {
-            return Differentiator(curr->left_);
+            return Differentiator(curr->left_, variable);
         }
 
         case NodeTypeName::SIN : {
@@ -95,7 +89,7 @@ node_t Differentiator(node_t curr) {
                     NodeTypeName::COS);
             return CreateBinaryOperation(
                     tmp,
-                    Differentiator(curr->left_),
+                    Differentiator(curr->left_, variable),
                     NodeTypeName::MUL);
         }
 
@@ -107,7 +101,7 @@ node_t Differentiator(node_t curr) {
                     NodeTypeName::UNARY_MINUS);
             return CreateBinaryOperation(
                     tmp,
-                    Differentiator(curr->left_),
+                    Differentiator(curr->left_, variable),
                     NodeTypeName::MUL);
         }
 
@@ -118,12 +112,13 @@ node_t Differentiator(node_t curr) {
                     NodeTypeName::DIV);
             return CreateBinaryOperation(
                     tmp,
-                    Differentiator(curr->left_),
+                    Differentiator(curr->left_, variable),
                     NodeTypeName::MUL);
         }
 
         case NodeTypeName::VARIABLE : {
-            return CreateNumber(1);
+            std::cerr << curr->value_ << ' ' << variable << std::endl;
+            return CreateNumber(curr->value_ == variable ? 1 : 0);
         }
 
         case NodeTypeName::NUMBER : {

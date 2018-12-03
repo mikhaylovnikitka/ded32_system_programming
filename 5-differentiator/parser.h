@@ -95,7 +95,8 @@ node_t Parser(int l, int r, std::string& str) {
             return CreateNumber(std::stoi(exp));
         } else {
             std::cout << "[INFO] Creating Variable " << exp <<  std::endl;
-            return CreateVariable(1);
+            /*exp will be with braces (x)*/
+            return CreateVariable(exp[1]);
         }
     }
 
