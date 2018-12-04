@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "tree.h"
+#include "TexLogger.h"
 
 #define ASSERT_TRUE(x) assert((x))
 
@@ -29,7 +30,7 @@ node_t Parser(int l, int r, std::string& str) {
     std::cout << str[l] << ' ' << str[r] << std::endl;
     std::cout << MySubStr(l, r, str) << std::endl;
     if (str[l] == '(' && str[r] == ')') {
-        std::cout << "[INFO] Resizing..." << std::endl;
+        /*resizing the area*/
         l++;
         r--;
     }
@@ -91,10 +92,8 @@ node_t Parser(int l, int r, std::string& str) {
         auto exp = MySubStr(l, r, str);
         std::cout << exp << std::endl;
         if (IsNumber(exp)) {
-            std::cout << "[INFO] Creating Number " << exp << std::endl;
             return CreateNumber(std::stoi(exp));
         } else {
-            std::cout << "[INFO] Creating Variable " << exp <<  std::endl;
             /*exp will be with braces (x)*/
             return CreateVariable(exp[1]);
         }

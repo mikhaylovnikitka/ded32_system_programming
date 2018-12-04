@@ -7,6 +7,8 @@
 
 #include "tree.h"
 
+TexLogger logger("output.txt");
+
 node_t Differentiator(const node_t curr, int variable) {
     if (curr == nullptr) {
         return nullptr;
@@ -15,12 +17,20 @@ node_t Differentiator(const node_t curr, int variable) {
     auto d_right = Differentiator(curr->right_, variable);
     switch (curr->type_name_) {
         case NodeTypeName::SUB:{
+            logger.WriteLine("To take SUB derivative we take derivative from the left and from the right");
             return CreateBinaryOperation(
                     d_left,
                     d_right,
                     NodeTypeName::SUB);
         }
         case NodeTypeName::ADD:{
+            logger.WriteLine("To take ADD derivative we take derivative from the left and from the right. \n\n");
+            logger.WriteLine("$\\frac{\\partial Left(x)}{\\partial x}$ = ");
+            logger.WriteTreeToTex(d_left);
+            logger.WriteLine("\n\n");
+            logger.WriteLine("$\\frac{\\partial Right(x)}{\\partial x}$ = ");
+            logger.WriteTreeToTex(d_right);
+            logger.WriteLine("\n\n");
             return CreateBinaryOperation(
                     d_left,
                     d_right,

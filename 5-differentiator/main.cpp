@@ -17,5 +17,6 @@ int main() {
     }
     node_t simple_df = Simplificator(df);
 
+    logger.WriteTreeToTex(simple_df);
     return 0;
 }
