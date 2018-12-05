@@ -147,7 +147,6 @@ node_t Differentiator(const node_t curr, int variable) {
 
         case NodeTypeName::VARIABLE : {
             logger.WriteLine("Не забыть как смерть икса!!! \n\n");
-            std::cerr << curr->value_ << ' ' << variable << std::endl;
             auto answer = CreateNumber(curr->value_ == variable ? 1 : 0);
             logger.WriteUnaryOperationDerivative(curr, answer);
             return answer;

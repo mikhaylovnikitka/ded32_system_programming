@@ -113,7 +113,7 @@ node_t Parser::parsePrimary() {
         return std::make_shared<Node>(NodeTypeName::VARIABLE, id[0]);
     }
     throwIf(id.empty());
-    throwIf(id != "sin" && id != "cos" && id != "ln");
+    throwIf(id != "sin" && id != "cos" && id != "log");
     throwIf(text[pointer] != '(');
     ++pointer;
     auto nodeExpression = parseExpression();

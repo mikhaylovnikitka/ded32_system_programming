@@ -8,11 +8,6 @@
 #include "Tree.h"
 #include "Differentiator.h"
 
-//#include <cmath>
-//
-//bool EqualDouble(const double a, const double b, const double epsilon = 1e-5) {
-//    return abs(a - b) < epsilon;
-//}
 
 bool IsZero(node_t curr) {
     if (curr == nullptr) {
@@ -40,6 +35,9 @@ node_t Simplificator(const node_t curr) {
             if (IsZero(simple_left) && IsZero(simple_right)) {
                 return CreateNumber(0);
             }
+            if (IsOne(simple_left) && IsOne(simple_right)) {
+                return CreateNumber(0);
+            }
             if (IsZero(simple_left)) {
                 return simple_right;
             }
@@ -62,7 +60,6 @@ node_t Simplificator(const node_t curr) {
         }
         case NodeTypeName::MUL : {
             if (IsZero(simple_left) || IsZero(simple_right)) {
-                std::cout << "ZERO!!!" << std::endl;
                 return CreateNumber(0);
             }
             if (IsOne(simple_left)) {
