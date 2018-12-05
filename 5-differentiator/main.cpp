@@ -1,13 +1,18 @@
 #include <iostream>
-#include "tree.h"
-#include "parser.h"
-#include "differentiator.h"
+#include "Tree.h"
+#include "Parser.h"
+#include "Differentiator.h"
 #include "Simplificator.h"
-#include "validator.h"
+#include "Validator.h"
+#include "GlobalVar.h"
 
 int main() {
-    std::string expression = "((5)+(sin((x))))";
-    node_t root = Parser(0, expression.size() - 1, expression);
+    std::string expression = "x^5";
+    if (!InputValidator(expression)) {
+        throw std::runtime_error("Not valid expression");
+    }
+    Parser parser(expression);
+    node_t root = parser.parse();
     if (!TreeValidator(root)) {
         throw std::runtime_error("Tree is not OK");
     }
@@ -17,6 +22,14 @@ int main() {
     }
     node_t simple_df = Simplificator(df);
 
+
+    logger.WriteLine("----------------------------------------- \n\n");
+    logger.WriteLine(R"($f(x)$ = )");
+    logger.WriteTreeToTex(root);
+    logger.WriteLine("\n\n");
+    logger.WriteLine(R"($\frac{\partial }{\partial x}$ = )");
     logger.WriteTreeToTex(simple_df);
+    logger.WriteLine("\n\n");
+
     return 0;
 }

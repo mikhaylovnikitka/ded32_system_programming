@@ -9,8 +9,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <utility>
 #include <stdlib.h>
-#include "tree.h"
+#include "Tree.h"
 
 class TexLogger {
 public:
@@ -26,20 +27,32 @@ public:
 
     ~TexLogger() {
         fout_ << "\\end{document}" << std::endl;
-        std::string to_call = "pdflatex " + filename_;
+        std::string to_call = "pdflatex " + filename_ + " > /dev/null";
         system(to_call.c_str());
     }
 
     void WriteTreeToTex(node_t curr, std::string label = "", bool tex_label = false) {
         if (tex_label) {
-            fout_ << "$" << label << ConvertTreeToString(curr) << "$ \n\n" ;
+            fout_ << "$" << label << ConvertTreeToString(curr) << "$" ;
         } else {
-            fout_ << label << "$" << ConvertTreeToString(curr) << "$ \n\n" ;
+            fout_ << label << "$" << ConvertTreeToString(curr) << "$" ;
         }
     }
 
     void WriteLine(std::string line) {
         fout_ << line;
+    }
+
+    void WriteBinaryOperationDerivative(node_t operation, node_t derivative) {
+        fout_ << R"($\frac{\partial}{\partial x})";
+        fout_ << "(" << ConvertTreeToString(operation) << ") = ";
+        fout_ << ConvertTreeToString(derivative) << "$\n\n";
+    }
+
+    void WriteUnaryOperationDerivative(node_t operation, node_t derivative) {
+        fout_ << R"($\frac{\partial}{\partial x})";
+        fout_ << "(" << ConvertTreeToString(operation) << ") = ";
+        fout_ << ConvertTreeToString(derivative) << "$\n\n";
     }
 
 private:
@@ -64,7 +77,7 @@ private:
                 return d_left + "*" + d_right;
             }
             case NodeTypeName::DIV : {
-                return "\frac{" + d_left + "}{" + d_right + "}";
+                return "\\frac{" + d_left + "}{" + d_right + "}";
             }
 
             case NodeTypeName::POW : {

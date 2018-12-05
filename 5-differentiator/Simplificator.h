@@ -5,7 +5,8 @@
 #ifndef INC_5_DIFFERENTIATOR_SIMPLIFICATOR_H
 #define INC_5_DIFFERENTIATOR_SIMPLIFICATOR_H
 
-#include "tree.h"
+#include "Tree.h"
+#include "Differentiator.h"
 
 //#include <cmath>
 //
@@ -45,6 +46,7 @@ node_t Simplificator(const node_t curr) {
             if (IsZero(simple_right)) {
                 return simple_left;
             }
+            return CreateBinaryOperation(simple_left, simple_right, curr->type_name_);
         }
         case NodeTypeName::ADD:{
             if (IsZero(simple_left) && IsZero(simple_right)) {
@@ -56,9 +58,11 @@ node_t Simplificator(const node_t curr) {
             if (IsZero(simple_right)) {
                 return simple_left;
             }
+            return CreateBinaryOperation(simple_left, simple_right, curr->type_name_);
         }
         case NodeTypeName::MUL : {
             if (IsZero(simple_left) || IsZero(simple_right)) {
+                std::cout << "ZERO!!!" << std::endl;
                 return CreateNumber(0);
             }
             if (IsOne(simple_left)) {
@@ -67,6 +71,7 @@ node_t Simplificator(const node_t curr) {
             if (IsOne(simple_right)) {
                 return simple_left;
             }
+            return CreateBinaryOperation(simple_left, simple_right, curr->type_name_);
         }
         case NodeTypeName::DIV : {
             if (IsZero(simple_right)) {
@@ -78,6 +83,7 @@ node_t Simplificator(const node_t curr) {
             if (IsOne(simple_right)) {
                 return simple_left;
             }
+            return CreateBinaryOperation(simple_left, simple_right, curr->type_name_);
         }
 
         case NodeTypeName::POW : {
@@ -94,6 +100,7 @@ node_t Simplificator(const node_t curr) {
             if (IsOne(simple_right)) {
                 return simple_left;
             }
+            return CreateBinaryOperation(simple_left, simple_right, curr->type_name_);
         }
 
         case NodeTypeName::UNARY_MINUS : {
@@ -103,14 +110,23 @@ node_t Simplificator(const node_t curr) {
             if (IsOne(simple_left)) {
                 return CreateNumber(-1);
             }
+            return CreateUnaryOperation(simple_left, curr->type_name_);
         }
 
         case NodeTypeName::SIN : {
             if (IsZero(simple_left)) {
                 return CreateNumber(0);
             }
+            return CreateUnaryOperation(simple_left, curr->type_name_);
         }
 
+        case NodeTypeName::COS : {
+            return CreateUnaryOperation(simple_left, curr->type_name_);
+        }
+
+        case NodeTypeName::LOG : {
+            return CreateUnaryOperation(simple_left, curr->type_name_);
+        }
         default: return curr;
     }
 }

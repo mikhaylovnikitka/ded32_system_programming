@@ -74,3 +74,4 @@ node_t CreateVariable(int value) {
     return new_node;
 }
 #endif //INC_5_DIFFERENTIATOR_TREE_H
+

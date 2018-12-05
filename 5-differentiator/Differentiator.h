@@ -5,9 +5,8 @@
 #ifndef INC_5_DIFFERENTIATOR_DIFFERENTIATOR_H
 #define INC_5_DIFFERENTIATOR_DIFFERENTIATOR_H
 
-#include "tree.h"
-
-TexLogger logger("output.txt");
+#include "Tree.h"
+#include "GlobalVar.h"
 
 node_t Differentiator(const node_t curr, int variable) {
     if (curr == nullptr) {
@@ -17,26 +16,26 @@ node_t Differentiator(const node_t curr, int variable) {
     auto d_right = Differentiator(curr->right_, variable);
     switch (curr->type_name_) {
         case NodeTypeName::SUB:{
-            logger.WriteLine("To take SUB derivative we take derivative from the left and from the right");
-            return CreateBinaryOperation(
+            logger.WriteLine("Применяя правило взятия произвоной суммы, берем проиводные от слагаемых. \n\n");
+            auto answer = CreateBinaryOperation(
                     d_left,
                     d_right,
                     NodeTypeName::SUB);
+            logger.WriteBinaryOperationDerivative(curr, answer);
+            return answer;
         }
         case NodeTypeName::ADD:{
-            logger.WriteLine("To take ADD derivative we take derivative from the left and from the right. \n\n");
-            logger.WriteLine("$\\frac{\\partial Left(x)}{\\partial x}$ = ");
-            logger.WriteTreeToTex(d_left);
-            logger.WriteLine("\n\n");
-            logger.WriteLine("$\\frac{\\partial Right(x)}{\\partial x}$ = ");
-            logger.WriteTreeToTex(d_right);
-            logger.WriteLine("\n\n");
-            return CreateBinaryOperation(
+            logger.WriteLine("Применяя правило взятия произвоной суммы, берем проиводные от слагаемых. \n\n");
+
+            auto answer = CreateBinaryOperation(
                     d_left,
                     d_right,
                     NodeTypeName::ADD);
+            logger.WriteBinaryOperationDerivative(curr, answer);
+            return answer;
         }
         case NodeTypeName::MUL : {
+            logger.WriteLine("Произведение (дифференцируется). \n\n");
             auto first_mul = CreateBinaryOperation(
                     d_left,
                     curr->right_,
@@ -45,12 +44,15 @@ node_t Differentiator(const node_t curr, int variable) {
                     curr->left_,
                     d_right,
                     NodeTypeName::MUL);
-            return CreateBinaryOperation(
+            auto answer =  CreateBinaryOperation(
                     first_mul,
                     second_mul,
-                    NodeTypeName::SUB);
+                    NodeTypeName::ADD);
+            logger.WriteBinaryOperationDerivative(curr, answer);
+            return answer;
         }
         case NodeTypeName::DIV : {
+            logger.WriteLine("Самая сложная производная. \n\n");
             auto first_mul = CreateBinaryOperation(
                     d_left,
                     curr->right_,
@@ -67,72 +69,95 @@ node_t Differentiator(const node_t curr, int variable) {
                     curr->right_,
                     CreateNumber(2),
                     NodeTypeName::POW);
-            return CreateBinaryOperation(
+            auto answer = CreateBinaryOperation(
                     numerator,
                     denomitanor,
                     NodeTypeName::DIV);
+            logger.WriteBinaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::POW : {
             /* lets suppose f(x) = h(x)^g(x)
              * so, to diff f(x) = exp(g(x)*ln(h(x)))
              * after that, f'(x) = f(x) * (g(x)*ln(h(x)))' */
+            logger.WriteLine("Представим как экспоненту логарифма и подифференцируем. \n\n");
             auto h_x = curr->left_;
             auto g_x = curr->right_;
             auto helpful_mul = CreateBinaryOperation(
                     g_x,
                     CreateUnaryOperation(h_x, NodeTypeName::LOG),
                     NodeTypeName::MUL);
-            return CreateBinaryOperation(
+            auto answer = CreateBinaryOperation(
                     curr,
                     Differentiator(helpful_mul, variable),
                     NodeTypeName::MUL);
+            logger.WriteBinaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::UNARY_MINUS : {
-            return Differentiator(curr->left_, variable);
+            logger.WriteLine("Просто унарный минус. \n\n");
+            auto answer = Differentiator(curr->left_, variable);
+            logger.WriteUnaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::SIN : {
+            logger.WriteLine("Производная синуса косинус. \n\n");
             auto tmp = CreateUnaryOperation(
                     curr->left_,
                     NodeTypeName::COS);
-            return CreateBinaryOperation(
+            auto answer = CreateBinaryOperation(
                     tmp,
                     Differentiator(curr->left_, variable),
                     NodeTypeName::MUL);
+            logger.WriteUnaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::COS : {
+            logger.WriteLine("Главное не забыть минус. \n\n");
             auto tmp = CreateUnaryOperation(
                     CreateUnaryOperation(
                             curr->left_,
                             NodeTypeName::COS),
                     NodeTypeName::UNARY_MINUS);
-            return CreateBinaryOperation(
+            auto answer = CreateBinaryOperation(
                     tmp,
                     Differentiator(curr->left_, variable),
                     NodeTypeName::MUL);
+            logger.WriteUnaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::LOG : {
+            logger.WriteLine("Производная логарифма. \n\n");
             auto tmp =  CreateBinaryOperation(
                     CreateNumber(1),
                     curr->left_,
                     NodeTypeName::DIV);
-            return CreateBinaryOperation(
+            auto answer = CreateBinaryOperation(
                     tmp,
                     Differentiator(curr->left_, variable),
                     NodeTypeName::MUL);
+            logger.WriteUnaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::VARIABLE : {
+            logger.WriteLine("Не забыть как смерть икса!!! \n\n");
             std::cerr << curr->value_ << ' ' << variable << std::endl;
-            return CreateNumber(curr->value_ == variable ? 1 : 0);
+            auto answer = CreateNumber(curr->value_ == variable ? 1 : 0);
+            logger.WriteUnaryOperationDerivative(curr, answer);
+            return answer;
         }
 
         case NodeTypeName::NUMBER : {
-            return CreateNumber(0);
+            logger.WriteLine("Хоба нолик. \n\n");
+            auto answer = CreateNumber(0);
+            logger.WriteUnaryOperationDerivative(curr, answer);
+            return answer;
         }
         default: return nullptr;
     }

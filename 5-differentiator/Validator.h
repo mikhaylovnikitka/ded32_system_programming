@@ -5,9 +5,9 @@
 #ifndef INC_5_DIFFERENTIATOR_VALIDATOR_H
 #define INC_5_DIFFERENTIATOR_VALIDATOR_H
 
-#include "tree.h"
+#include "Tree.h"
 
-bool TreeValidator(node_t curr) noexcept {
+bool TreeValidator(const node_t& curr) noexcept {
     if (curr == nullptr) {
         return false;
     }
@@ -33,6 +33,22 @@ bool TreeValidator(node_t curr) noexcept {
     if (type_name == VARIABLE || type_name == NUMBER) {
         return curr->left_ == nullptr && curr->right_ == nullptr;
     }
+}
+
+bool InputValidator(const std::string& s) noexcept {
+    int balance = 0;
+    for (auto ch:s) {
+        if (ch == '(') {
+            balance++;
+        }
+        if (ch == ')') {
+            balance--;
+        }
+        if (balance < 0) {
+            return false;
+        }
+    }
+    return balance == 0;
 }
 
 #endif //INC_5_DIFFERENTIATOR_VALIDATOR_H
