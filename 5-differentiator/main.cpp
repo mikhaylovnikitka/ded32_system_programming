@@ -8,6 +8,7 @@
 #include "Validator.h"
 #include "GlobalVar.h"
 
+
 void Test(std::vector<std::string>& expressions) {
     for (auto exp :expressions) {
         logger.WriteLine("----------------------------------- \n\n");
@@ -44,8 +45,7 @@ int main() {
     std::vector<std::string> expressions = {"(log(x))^5",
                                             "x^x",
                                             "(x^2)+(x^3)",
-                                            "x-x",
-                                            "x-y"};
+                                            "x-x"};
     Test(expressions);
     return 0;
 }
