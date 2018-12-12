@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/Logger.h
+cstdio
+-
+
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/LoggerHTML.h
+Logger.h
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/Logger.h
+iostream
+-
+fstream
+-
+
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/ProtectedStack.h
+string
+-
+Logger.h
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/Logger.h
+LoggerHTML.h
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/LoggerHTML.h
+
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/main.cpp
+iostream
+-
+random
+-
+cassert
+-
+ProtectedStack.h
+/Users/nikita/Documents/5sem/ded32_system_programming/3_protected_stack/ProtectedStack.h
+

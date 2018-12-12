@@ -1,0 +1,3 @@
+/Users/nikita/Documents/5sem/ded32_system_programming/5-differentiator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/nikita/Documents/5sem/ded32_system_programming/5-differentiator/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/nikita/Documents/5sem/ded32_system_programming/5-differentiator/cmake-build-debug/CMakeFiles/5_differentiator.dir
