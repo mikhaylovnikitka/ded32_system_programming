@@ -1,3 +1,0 @@
-/Users/nikita/Documents/ded32_system_programming/2_raving_generator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/nikita/Documents/ded32_system_programming/2_raving_generator/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/nikita/Documents/ded32_system_programming/2_raving_generator/cmake-build-debug/CMakeFiles/2_raving_generator.dir
