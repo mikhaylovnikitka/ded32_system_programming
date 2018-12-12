@@ -45,7 +45,7 @@ int main() {
                                             "x^x",
                                             "(x^2)+(x^3)",
                                             "x-x",
-                                            "x-y"};
+                                            "1+x"};
     Test(expressions);
     return 0;
 }
